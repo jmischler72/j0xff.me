@@ -1,0 +1,69 @@
+name: Update Root Me Stats
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # daily at 06:00 UTC
+  workflow_dispatch:        # allow manual trigger
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch Root Me stats
+        id: stats
+        run: |
+          RESPONSE=$(curl -s \
+            -H "Cookie: api_key=${{ secrets.ROOTME_API_KEY }}" \
+            "https://api.www.root-me.org/auteurs/${{ vars.ROOTME_USER_ID }}")
+
+          SCORE=$(echo "$RESPONSE" | jq -r '.score')
+          RANK=$(echo "$RESPONSE"  | jq -r '.position')
+          CHALLENGES=$(echo "$RESPONSE" | jq '.challenges | length')
+
+          echo "score=$SCORE"             >> $GITHUB_OUTPUT
+          echo "rank=$RANK"               >> $GITHUB_OUTPUT
+          echo "challenges=$CHALLENGES"   >> $GITHUB_OUTPUT
+
+      - name: Update index.html
+        run: |
+          python3 - <<'PYEOF'
+          import re, pathlib, os
+
+          path = pathlib.Path("index.html")
+          content = path.read_text()
+
+          score      = os.environ["SCORE"]
+          rank       = os.environ["RANK"]
+          challenges = os.environ["CHALLENGES"]
+
+          new_block = (
+              "<!-- rootme-stats -->\n"
+              f"<p>Root Me &mdash; {score} pts"
+              f" &middot; rank #{rank}"
+              f" &middot; {challenges} challenges solved</p>\n"
+              "<!-- /rootme-stats -->"
+          )
+
+          content = re.sub(
+              r"<!-- rootme-stats -->.*?<!-- /rootme-stats -->",
+              new_block,
+              content,
+              flags=re.DOTALL,
+          )
+          path.write_text(content)
+          PYEOF
+        env:
+          SCORE:      ${{ steps.stats.outputs.score }}
+          RANK:       ${{ steps.stats.outputs.rank }}
+          CHALLENGES: ${{ steps.stats.outputs.challenges }}
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git diff --quiet && exit 0
+          git add index.html
+          git commit -m "chore: update Root Me stats"
+          git push
