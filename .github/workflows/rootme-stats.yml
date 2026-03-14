@@ -26,7 +26,7 @@ jobs:
         run: |
           RESPONSE=$(curl -s \
             -H "Cookie: ${{ steps.login.outputs.cookie }}" \
-            "https://api.www.root-me.org/auteurs/${{ vars.ROOTME_USER_ID }}")
+            "https://api.www.root-me.org/auteurs/${{ secrets.ROOTME_LOGIN }}")
 
           SCORE=$(echo "$RESPONSE" | jq -r '.score')
           RANK=$(echo "$RESPONSE"  | jq -r '.position')
