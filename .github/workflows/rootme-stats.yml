@@ -11,11 +11,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Login to Root Me
+        id: login
+        run: |
+          COOKIE=$(curl -s -c - -X POST \
+            "https://api.www.root-me.org/login" \
+            -H "Content-Type: application/json" \
+            -d '{"login":"${{ secrets.ROOTME_LOGIN }}","password":"${{ secrets.ROOTME_PASSWORD }}"}' \
+            | grep -oP '(?<=spip_session\t)\S+')
+          echo "cookie=spip_session=$COOKIE" >> $GITHUB_OUTPUT
+
       - name: Fetch Root Me stats
         id: stats
         run: |
           RESPONSE=$(curl -s \
-            -H "Cookie: api_key=${{ secrets.ROOTME_API_KEY }}" \
+            -H "Cookie: ${{ steps.login.outputs.cookie }}" \
             "https://api.www.root-me.org/auteurs/${{ vars.ROOTME_USER_ID }}")
 
           SCORE=$(echo "$RESPONSE" | jq -r '.score')
