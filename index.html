@@ -1,112 +1,308 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>j0xff.me</title>
-  <style>
-    body {
-      font-family: monospace;
-      max-width: 600px;
-      margin: 60px auto;
-      padding: 0 20px;
-      background: #fff;
-      color: #111;
-      line-height: 1.6;
-    }
-    h1 { margin-bottom: 4px; }
-    p { margin-top: 0; color: #555; }
-    hr { border: none; border-top: 1px solid #ddd; margin: 30px 0; }
-    a { color: #111; }
-    a:hover { color: #555; }
-    ul { padding-left: 20px; }
-    li { margin-bottom: 8px; }
-    .links { display: flex; gap: 16px; margin-top: 16px; }
-    .health-indicator {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #ccc;
-      margin-right: 5px;
-      vertical-align: middle;
-    }
-    .health-indicator.healthy   { background: #5a5; }
-    .health-indicator.unhealthy { background: #c44; }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>j0xff.me</title>
+    <style>
+      body {
+        font-family: monospace;
+        max-width: 600px;
+        margin: 60px auto;
+        padding: 0 20px;
+        background: #fff;
+        color: #111;
+        line-height: 1.6;
+        text-transform: lowercase;
+      }
+      h1 {
+        margin-bottom: 4px;
+      }
+      p {
+        margin-top: 0;
+        color: #555;
+      }
+      hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 30px 0;
+      }
+      a {
+        color: #111;
+      }
+      a:hover {
+        color: #555;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 8px;
+      }
+      .links {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .health-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ccc;
+        margin-right: 5px;
+        vertical-align: middle;
+      }
+      .health-indicator.healthy {
+        background: #5a5;
+      }
+      .health-indicator.unhealthy {
+        background: #c44;
+      }
 
-  <h1>Joffrey</h1>
-  <p>Building things.</p>
+      .projects {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+      }
 
-  <div class="links">
-    <a href="https://github.com/jmischler72" target="_blank">[GitHub]</a>
-    <a href="https://youtube.com/@jmischler72" target="_blank">[YouTube]</a>
-    <a href="https://www.linkedin.com/in/joffrey-mischler-4038a2214/" target="_blank">[Linkedin]</a>
-  </div>
+      .project {
+        margin-bottom: 16px;
+        padding: 12px;
+        border: 1px solid #e6e6e6;
+        border-radius: 10px;
+        background: #fcfcfc;
+      }
 
-  <hr>
+      .project:last-child {
+        margin-bottom: 0;
+      }
 
-  <h2>Projects</h2>
-  <ul>
-    <li>
-      <span class="health-indicator" data-url="https://cazvas.fr/"></span>
-      <a href="https://cazvas.fr/" target="_blank">Cazvas</a> —
-      Infinite grid of pixel art, with social features.
-    </li>
-    <!-- <li>
+      .shot {
+        display: block;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        transition:
+          transform 120ms ease,
+          box-shadow 160ms ease;
+        text-decoration: none;
+      }
+
+      .shot:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
+      }
+
+      .shot img {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: saturate(1.03) contrast(1.02);
+      }
+
+      .project-shot {
+        margin-top: 10px;
+        max-width: 100%;
+      }
+
+      .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .badge {
+        font-size: 0.75em;
+        padding: 2px 8px;
+        border: 1px solid #ddd;
+        border-radius: 999px;
+        background: #f2f2f2;
+        color: #555;
+      }
+
+      .stats {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .stat-card {
+        padding: 12px;
+        border: 1px solid #e6e6e6;
+        border-radius: 10px;
+        background: #fcfcfc;
+      }
+
+      .stat-card h3 {
+        margin: 0 0 8px;
+        font-size: 1em;
+      }
+
+      .contrib-graph {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>joff</h1>
+    <p>Engineering things.</p>
+
+    <div class="links">
+      <a href="https://github.com/jmischler72" target="_blank">[GitHub]</a>
+      <a href="https://youtube.com/@jmischler72" target="_blank">[YouTube]</a>
+      <a
+        href="https://www.linkedin.com/in/joffrey-mischler-4038a2214/"
+        target="_blank"
+        >[Linkedin]</a
+      >
+    </div>
+
+    <hr />
+
+    <h2>Projects</h2>
+    <ul class="projects">
+      <li class="project">
+        <span class="health-indicator" data-url="https://cazvas.fr/"></span>
+        <a href="https://cazvas.fr/" target="_blank">Cazvas</a> — Infinite grid
+        of pixel art, with social features.
+        <div class="badges">
+          <span class="badge">Next</span>
+          <span class="badge">Supabase</span>
+        </div>
+        <a
+          class="shot project-shot"
+          href="https://cazvas.fr/"
+          target="_blank"
+          aria-label="Open Cazvas"
+        >
+          <img src="assets/cazvas.png" alt="Cazvas screenshot" loading="lazy" />
+        </a>
+      </li>
+      <!-- <li>
       <a href="#" target="_blank">Project Two</a> —
       Short description of what this does.
     </li> -->
-    <li>
-      <span class="health-indicator" data-url="https://tetrarena.j0xff.me/"></span>
-      <a href="https://tetrarena.j0xff.me/" target="_blank">Tetrarena</a> —
-      Tetris in multiplayer.
-    </li>
-  </ul>
+      <li class="project">
+        <span
+          class="health-indicator"
+          data-url="https://tetrarena.joff.sh/"
+        ></span>
+        <a href="https://tetrarena.joff.sh/" target="_blank">Tetrarena</a> —
+        Tetris in multiplayer.
+        <div class="badges">
+          <span class="badge">TS</span>
+          <span class="badge">Firebase</span>
+          <span class="badge">Colyseus</span>
+        </div>
+        <a
+          class="shot project-shot"
+          href="https://tetrarena.joff.sh/"
+          target="_blank"
+          aria-label="Open Tetrarena"
+        >
+          <img
+            src="assets/tetrarena.png"
+            alt="Tetrarena screenshot"
+            loading="lazy"
+          />
+        </a>
+      </li>
+      <li class="project">
+        <a href="https://github.com/jmischler72/mqtt-dashboard" target="_blank"
+          >mqtt-dashboard</a
+        >
+        — Self-hostable dashboard for monitoring and interacting with MQTT
+        topics.
+        <div class="badges">
+          <span class="badge">Go</span>
+          <span class="badge">React</span>
+        </div>
+        <a
+          class="shot project-shot"
+          href="https://github.com/jmischler72/mqtt-dashboard"
+          target="_blank"
+          aria-label="Open MQTT Dashboard repository"
+        >
+          <img
+            src="assets/mqtt-dashboard.png"
+            alt="MQTT Dashboard screenshot"
+            loading="lazy"
+          />
+        </a>
+      </li>
+    </ul>
 
-  <hr>
+    <hr />
 
-  <h2>Root Me</h2>
-  <!-- rootme-stats -->
-  <p>stats not yet fetched</p>
-  <!-- /rootme-stats -->
+    <h2>Stats</h2>
+    <div class="stats">
+      <div class="stat-card">
+        <h3>GitHub contributions</h3>
+        <a href="https://github.com/jmischler72" target="_blank">
+          <img
+            class="contrib-graph"
+            src="https://ghchart.rshah.org/jmischler72"
+            alt="jmischler72's GitHub contribution graph"
+            loading="lazy"
+          />
+        </a>
+      </div>
+      <div class="stat-card">
+        <h3>Root Me</h3>
+        <a
+          class="badge"
+          href="https://www.root-me.org/jmischler72"
+          target="_blank"
+          >View profile on root-me.org</a
+        >
+      </div>
+    </div>
 
+    <hr />
 
-  <script>
-    function checkHealth(indicator) {
-      const url = indicator.dataset.url;
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 5000);
+    <script>
+      function checkHealth(indicator) {
+        const url = indicator.dataset.url;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
 
-      fetch(url, { mode: 'no-cors', signal: controller.signal })
-        .then(() => {
-          indicator.classList.remove('unhealthy');
-          indicator.classList.add('healthy');
-        })
-        .catch(err => {
-          if (err.name === 'AbortError') {
-            indicator.classList.remove('healthy');
-            indicator.classList.add('unhealthy');
-          } else {
-            // CORS restricted — treat as healthy
-            indicator.classList.remove('unhealthy');
-            indicator.classList.add('healthy');
-          }
-        })
-        .finally(() => clearTimeout(timeout));
-    }
+        fetch(url, {mode: "no-cors", signal: controller.signal})
+          .then(() => {
+            indicator.classList.remove("unhealthy");
+            indicator.classList.add("healthy");
+          })
+          .catch((err) => {
+            if (err.name === "AbortError") {
+              indicator.classList.remove("healthy");
+              indicator.classList.add("unhealthy");
+            } else {
+              // CORS restricted — treat as healthy
+              indicator.classList.remove("unhealthy");
+              indicator.classList.add("healthy");
+            }
+          })
+          .finally(() => clearTimeout(timeout));
+      }
 
-    function initHealthChecks() {
-      const indicators = document.querySelectorAll('.health-indicator[data-url]');
-      indicators.forEach(indicator => {
-        checkHealth(indicator);
-        setInterval(() => checkHealth(indicator), 30000);
-      });
-    }
+      function initHealthChecks() {
+        const indicators = document.querySelectorAll(
+          ".health-indicator[data-url]",
+        );
+        indicators.forEach((indicator) => {
+          checkHealth(indicator);
+          setInterval(() => checkHealth(indicator), 30000);
+        });
+      }
 
-    document.addEventListener('DOMContentLoaded', initHealthChecks);
-  </script>
-</body>
+      document.addEventListener("DOMContentLoaded", initHealthChecks);
+    </script>
+  </body>
 </html>
