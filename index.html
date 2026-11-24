@@ -60,22 +60,144 @@
         background: #c44;
       }
 
-      .projects {
+      .carousel {
+        position: relative;
+      }
+
+      .carousel-viewport {
+        overflow: hidden;
+        border-radius: 10px;
+      }
+
+      .carousel-track {
         list-style: none;
         padding-left: 0;
         margin: 0;
+        display: flex;
+        align-items: stretch;
+        gap: 12px;
+        transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
       }
 
-      .project {
-        margin-bottom: 16px;
+      .carousel-track.is-instant {
+        transition: none;
+      }
+
+      .carousel-card {
+        flex: 0 0 78%;
+        box-sizing: border-box;
+        margin-bottom: 0;
         padding: 12px;
         border: 1px solid #e6e6e6;
         border-radius: 10px;
         background: #fcfcfc;
+        opacity: 0.4;
+        transform: scale(0.95);
+        transition:
+          opacity 280ms ease,
+          transform 280ms ease;
       }
 
-      .project:last-child {
-        margin-bottom: 0;
+      .carousel-card.is-active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .carousel-card:not(.is-active) {
+        cursor: pointer;
+      }
+
+      .carousel-card:not(.is-active):hover {
+        opacity: 0.65;
+      }
+
+      @media (max-width: 480px) {
+        .carousel-card {
+          flex: 0 0 84%;
+        }
+      }
+
+      .carousel-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .carousel-btn {
+        font-family: inherit;
+        font-size: 0.9em;
+        text-transform: inherit;
+        padding: 4px 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: #fcfcfc;
+        color: #111;
+        cursor: pointer;
+        transition:
+          background 120ms ease,
+          border-color 120ms ease;
+      }
+
+      .carousel-btn:hover {
+        background: #f2f2f2;
+        border-color: #bbb;
+      }
+
+      .carousel-btn:focus-visible,
+      .carousel-dot:focus-visible {
+        outline: 2px solid #111;
+        outline-offset: 2px;
+      }
+
+      .carousel-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .carousel-dots {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .carousel-dot {
+        width: 8px;
+        height: 8px;
+        padding: 0;
+        border: 1px solid #bbb;
+        border-radius: 50%;
+        background: transparent;
+        cursor: pointer;
+        transition:
+          background 120ms ease,
+          border-color 120ms ease,
+          transform 120ms ease;
+      }
+
+      .carousel-dot[aria-current="true"] {
+        background: #111;
+        border-color: #111;
+        transform: scale(1.15);
+      }
+
+      .carousel-counter {
+        font-size: 0.85em;
+        color: #555;
+        min-width: 3ch;
+        text-align: center;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .carousel-track,
+        .carousel-card,
+        .shot,
+        .carousel-btn,
+        .carousel-dot {
+          transition: none;
+        }
       }
 
       .shot {
@@ -168,8 +290,16 @@
     <hr />
 
     <h2>Projects</h2>
-    <ul class="projects">
-      <li class="project">
+    <div
+      class="carousel"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Projects"
+      tabindex="0"
+    >
+      <div class="carousel-viewport">
+        <ul class="carousel-track projects">
+      <li class="carousel-card project">
         <span class="health-indicator" data-url="https://cazvas.fr/"></span>
         <a href="https://cazvas.fr/" target="_blank">Cazvas</a> — Infinite grid
         of pixel art, with social features.
@@ -190,7 +320,7 @@
       <a href="#" target="_blank">Project Two</a> —
       Short description of what this does.
     </li> -->
-      <li class="project">
+      <li class="carousel-card project">
         <span
           class="health-indicator"
           data-url="https://tetrarena.joff.sh/"
@@ -215,7 +345,7 @@
           />
         </a>
       </li>
-      <li class="project">
+      <li class="carousel-card project">
         <a href="https://github.com/jmischler72/mqtt-dashboard" target="_blank"
           >mqtt-dashboard</a
         >
@@ -238,7 +368,180 @@
           />
         </a>
       </li>
-    </ul>
+        </ul>
+      </div>
+      <div class="carousel-controls">
+        <button
+          type="button"
+          class="carousel-btn"
+          data-carousel-prev
+          aria-label="Previous project"
+        >
+          [&lt;- prev]
+        </button>
+        <div class="carousel-status">
+          <div class="carousel-dots" aria-label="Choose a project"></div>
+          <span class="carousel-counter" aria-live="polite">1 / 3</span>
+        </div>
+        <button
+          type="button"
+          class="carousel-btn"
+          data-carousel-next
+          aria-label="Next project"
+        >
+          [next -&gt;]
+        </button>
+      </div>
+    </div>
+
+    <hr />
+
+    <h2>Videos</h2>
+    <div
+      class="carousel"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Popular YouTube videos"
+      tabindex="0"
+    >
+      <div class="carousel-viewport">
+        <ul class="carousel-track">
+          <li class="carousel-card">
+            <a
+              href="https://www.youtube.com/watch?v=8EQxMbzlk7U"
+              target="_blank"
+              >Votre .env va finir sur GitHub (faites plutôt ça)</a
+            >
+            <div class="badges">
+              <span class="badge">15K views</span>
+            </div>
+            <a
+              class="shot project-shot"
+              href="https://www.youtube.com/watch?v=8EQxMbzlk7U"
+              target="_blank"
+              aria-label="Watch Votre .env va finir sur GitHub (faites plutôt ça)"
+            >
+              <img
+                src="https://i.ytimg.com/vi/8EQxMbzlk7U/maxresdefault.jpg"
+                alt="Votre .env va finir sur GitHub thumbnail"
+                loading="lazy"
+              />
+            </a>
+          </li>
+          <li class="carousel-card">
+            <a
+              href="https://www.youtube.com/watch?v=x_xkKiRZbKA"
+              target="_blank"
+              >What are Grafana, Loki, and Prometheus? Let me explain in a
+              relaxed way!</a
+            >
+            <div class="badges">
+              <span class="badge">10K views</span>
+            </div>
+            <a
+              class="shot project-shot"
+              href="https://www.youtube.com/watch?v=x_xkKiRZbKA"
+              target="_blank"
+              aria-label="Watch What are Grafana, Loki, and Prometheus?"
+            >
+              <img
+                src="https://i.ytimg.com/vi/x_xkKiRZbKA/maxresdefault.jpg"
+                alt="What are Grafana, Loki, and Prometheus thumbnail"
+                loading="lazy"
+              />
+            </a>
+          </li>
+          <li class="carousel-card">
+            <a
+              href="https://www.youtube.com/watch?v=CO5rfkY_0Lw"
+              target="_blank"
+              >Deploying apps has become way too easy - Dokploy &amp; Coolify</a
+            >
+            <div class="badges">
+              <span class="badge">8.5K views</span>
+            </div>
+            <a
+              class="shot project-shot"
+              href="https://www.youtube.com/watch?v=CO5rfkY_0Lw"
+              target="_blank"
+              aria-label="Watch Deploying apps has become way too easy - Dokploy & Coolify"
+            >
+              <img
+                src="https://i.ytimg.com/vi/CO5rfkY_0Lw/maxresdefault.jpg"
+                alt="Dokploy & Coolify thumbnail"
+                loading="lazy"
+              />
+            </a>
+          </li>
+          <li class="carousel-card">
+            <a
+              href="https://www.youtube.com/watch?v=wMcno-5y264"
+              target="_blank"
+              >Kubernetes en 10 min — sans payer un centime</a
+            >
+            <div class="badges">
+              <span class="badge">2.6K views</span>
+            </div>
+            <a
+              class="shot project-shot"
+              href="https://www.youtube.com/watch?v=wMcno-5y264"
+              target="_blank"
+              aria-label="Watch Kubernetes en 10 min — sans payer un centime"
+            >
+              <img
+                src="https://i.ytimg.com/vi/wMcno-5y264/maxresdefault.jpg"
+                alt="Kubernetes en 10 min thumbnail"
+                loading="lazy"
+              />
+            </a>
+          </li>
+          <li class="carousel-card">
+            <a
+              href="https://www.youtube.com/watch?v=esiPZDqo7AI"
+              target="_blank"
+              >Je suis certifié kubernetes (CKA)</a
+            >
+            <div class="badges">
+              <span class="badge">2.4K views</span>
+            </div>
+            <a
+              class="shot project-shot"
+              href="https://www.youtube.com/watch?v=esiPZDqo7AI"
+              target="_blank"
+              aria-label="Watch Je suis certifié kubernetes (CKA)"
+            >
+              <img
+                src="https://i.ytimg.com/vi/esiPZDqo7AI/maxresdefault.jpg"
+                alt="Je suis certifié kubernetes (CKA) thumbnail"
+                loading="lazy"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="carousel-controls">
+        <button
+          type="button"
+          class="carousel-btn"
+          data-carousel-prev
+          aria-label="Previous video"
+        >
+          [&lt;- prev]
+        </button>
+        <div class="carousel-status">
+          <div class="carousel-dots" aria-label="Choose a video"></div>
+          <span class="carousel-counter" aria-live="polite">1 / 5</span>
+        </div>
+        <button
+          type="button"
+          class="carousel-btn"
+          data-carousel-next
+          aria-label="Next video"
+        >
+          [next -&gt;]
+        </button>
+      </div>
+    </div>
 
     <hr />
 
@@ -302,7 +605,243 @@
         });
       }
 
-      document.addEventListener("DOMContentLoaded", initHealthChecks);
+      function initCarousel(carousel) {
+        if (!carousel) return;
+
+        const viewport = carousel.querySelector(".carousel-viewport");
+        const track = carousel.querySelector(".carousel-track");
+        const slides = Array.from(track.children);
+        const prevBtn = carousel.querySelector("[data-carousel-prev]");
+        const nextBtn = carousel.querySelector("[data-carousel-next]");
+        const dotsContainer = carousel.querySelector(".carousel-dots");
+        const counter = carousel.querySelector(".carousel-counter");
+
+        if (!slides.length) return;
+
+        const reducedMotionQuery = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        );
+        const AUTO_SCROLL_MS = 4500;
+
+        const firstClone = slides[0].cloneNode(true);
+        const lastClone = slides[slides.length - 1].cloneNode(true);
+        firstClone.dataset.clone = "first";
+        lastClone.dataset.clone = "last";
+        firstClone.setAttribute("aria-hidden", "true");
+        lastClone.setAttribute("aria-hidden", "true");
+        track.prepend(lastClone);
+        track.append(firstClone);
+
+        const trackSlides = Array.from(track.children);
+        let index = 0;
+        let trackIndex = 1;
+        let autoScrollTimer = null;
+        let isHovered = false;
+        let isFocused = false;
+
+        const dots = slides.map((slide, i) => {
+          slide.setAttribute("aria-roledescription", "slide");
+          slide.setAttribute("aria-label", `${i + 1} of ${slides.length}`);
+
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "carousel-dot";
+          dot.setAttribute("aria-label", `Go to slide ${i + 1}`);
+          dot.addEventListener("click", () => {
+            goTo(i);
+            resetAutoScroll();
+          });
+          dotsContainer.appendChild(dot);
+          return dot;
+        });
+
+        function updatePosition(instant = false) {
+          if (instant) {
+            track.classList.add("is-instant");
+          }
+          const activeSlide = trackSlides[trackIndex];
+          const offset =
+            activeSlide.offsetLeft -
+            (viewport.clientWidth - activeSlide.offsetWidth) / 2;
+          track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+          if (instant) {
+            track.offsetHeight;
+            track.classList.remove("is-instant");
+          }
+        }
+
+        function updateUI() {
+          counter.textContent = `${index + 1} / ${slides.length}`;
+          dots.forEach((dot, i) => {
+            dot.setAttribute("aria-current", i === index ? "true" : "false");
+          });
+          trackSlides.forEach((slide, i) => {
+            const isActive = i === trackIndex;
+            slide.classList.toggle("is-active", isActive);
+            if (!slide.dataset.clone) {
+              slide.setAttribute("aria-hidden", isActive ? "false" : "true");
+            }
+          });
+        }
+
+        function goTo(nextIndex, direction = 0) {
+          const total = slides.length;
+          const targetIndex = ((nextIndex % total) + total) % total;
+
+          if (direction === 1 && index === total - 1 && targetIndex === 0) {
+            trackIndex = total + 1;
+          } else if (
+            direction === -1 &&
+            index === 0 &&
+            targetIndex === total - 1
+          ) {
+            trackIndex = 0;
+          } else {
+            trackIndex = targetIndex + 1;
+          }
+
+          index = targetIndex;
+          updateUI();
+          updatePosition(reducedMotionQuery.matches);
+        }
+
+        track.addEventListener("transitionend", (event) => {
+          if (event.target !== track || event.propertyName !== "transform") {
+            return;
+          }
+          if (trackIndex === 0) {
+            trackIndex = slides.length;
+            updateUI();
+            updatePosition(true);
+          } else if (trackIndex === slides.length + 1) {
+            trackIndex = 1;
+            updateUI();
+            updatePosition(true);
+          }
+        });
+
+        trackSlides.forEach((slide, i) => {
+          slide.addEventListener("click", (event) => {
+            if (slide.classList.contains("is-active")) return;
+            event.preventDefault();
+            if (i === 0) {
+              goTo(slides.length - 1, -1);
+            } else if (i === trackSlides.length - 1) {
+              goTo(0, 1);
+            } else {
+              goTo(i - 1);
+            }
+            resetAutoScroll();
+          });
+        });
+
+        function stopAutoScroll() {
+          if (autoScrollTimer) {
+            clearInterval(autoScrollTimer);
+            autoScrollTimer = null;
+          }
+        }
+
+        function startAutoScroll() {
+          stopAutoScroll();
+          if (
+            reducedMotionQuery.matches ||
+            isHovered ||
+            isFocused ||
+            document.hidden
+          ) {
+            return;
+          }
+          autoScrollTimer = setInterval(() => {
+            goTo(index + 1, 1);
+          }, AUTO_SCROLL_MS);
+        }
+
+        function resetAutoScroll() {
+          startAutoScroll();
+        }
+
+        prevBtn.addEventListener("click", () => {
+          goTo(index - 1, -1);
+          resetAutoScroll();
+        });
+        nextBtn.addEventListener("click", () => {
+          goTo(index + 1, 1);
+          resetAutoScroll();
+        });
+
+        carousel.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            goTo(index - 1, -1);
+            resetAutoScroll();
+          } else if (event.key === "ArrowRight") {
+            event.preventDefault();
+            goTo(index + 1, 1);
+            resetAutoScroll();
+          }
+        });
+
+        carousel.addEventListener("mouseenter", () => {
+          isHovered = true;
+          stopAutoScroll();
+        });
+        carousel.addEventListener("mouseleave", () => {
+          isHovered = false;
+          startAutoScroll();
+        });
+        carousel.addEventListener("focusin", () => {
+          isFocused = true;
+          stopAutoScroll();
+        });
+        carousel.addEventListener("focusout", (event) => {
+          if (!carousel.contains(event.relatedTarget)) {
+            isFocused = false;
+            startAutoScroll();
+          }
+        });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) {
+            stopAutoScroll();
+          } else {
+            startAutoScroll();
+          }
+        });
+
+        let touchStartX = null;
+        track.addEventListener(
+          "touchstart",
+          (event) => {
+            touchStartX = event.changedTouches[0].clientX;
+            stopAutoScroll();
+          },
+          {passive: true},
+        );
+        track.addEventListener(
+          "touchend",
+          (event) => {
+            if (touchStartX === null) return;
+            const deltaX = event.changedTouches[0].clientX - touchStartX;
+            touchStartX = null;
+            if (Math.abs(deltaX) > 40) {
+              goTo(deltaX < 0 ? index + 1 : index - 1, deltaX < 0 ? 1 : -1);
+            }
+            startAutoScroll();
+          },
+          {passive: true},
+        );
+
+        window.addEventListener("resize", () => updatePosition(true));
+
+        updateUI();
+        updatePosition(true);
+        startAutoScroll();
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".carousel").forEach(initCarousel);
+        initHealthChecks();
+      });
     </script>
   </body>
 </html>
